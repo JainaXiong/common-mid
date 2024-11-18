@@ -22,6 +22,7 @@ export const MidUploadFile = memo((props: any) => {
     formData = false,
     tip = null
   } = props
+
   const beforeUpload = (file: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
