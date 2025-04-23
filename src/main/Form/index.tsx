@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { memo, useRef, useState } from "react"
 import {
   Cascader,

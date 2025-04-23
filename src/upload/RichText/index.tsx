@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 import React, { memo } from "react"
 import BraftEditor from "braft-editor"
 

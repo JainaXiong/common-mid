@@ -24,7 +24,7 @@ export const MidUploadFile = memo((props: any) => {
   } = props
 
   const beforeUpload = (file: any) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const { maxSize, fileType } = limits
       if (fileType) {
         let pass = false
@@ -73,7 +73,7 @@ export const MidUploadFile = memo((props: any) => {
         // @ts-ignore
         beforeUpload={beforeUpload}
         onChange={handleChange}
-        onRemove={(e) => onChange(null)}
+        onRemove={() => onChange(null)}
       >
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
