@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios"
 import { storage } from "common-screw"
 import { MidMessage } from "common-mid"

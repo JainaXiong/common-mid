@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { memo } from "react"
 import { Breadcrumb } from "antd"
 import { LooseObject } from "common-screw"

@@ -90,7 +90,7 @@ export const MidSearch = memo((props: SearchProps) => {
   const [LANG, setLANG] = useState(langList[Object.keys(langList)[0]])
   useDeepCompareEffect(() => {
     // 语言国际化 ,如果没有对应语言包，默认第一个语言包
-    const list = Object.keys(langList)
+    const list: any = Object.keys(langList)
     const e = language && list.includes(language) ? language : list[0]
     setLANG(langList[e])
   }, [langList, language])

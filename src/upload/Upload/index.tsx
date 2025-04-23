@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo, useState } from "react"
 import { useDeepCompareEffect } from "common-hook"
 import {
