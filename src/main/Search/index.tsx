@@ -2,29 +2,23 @@ import React, { memo, useRef, useState } from "react"
 import { Cascader, DatePicker, Form, Input, Select } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { getFlatData } from "common-mid"
-import { isArray, isNil, isObject, toEnumArray } from "common-screw"
+import { isNil, toEnumArray } from "common-screw"
 
 // 生成 Select 的 options 属性
 
 const toOptions = (
-  optionList: any,
+  list: any,
   placeholder: any,
   allTip: any,
   isAll: boolean = true
 ) => {
   const arr: any = []
   isAll && arr.push({ value: "", label: `${placeholder} - ${allTip}` })
-  if (isNil(optionList)) {
+  if (isNil(list)) {
     return []
-  } else if (
-    isArray(optionList) &&
-    optionList[0].label &&
-    optionList[0].value
-  ) {
-    arr.push(...optionList)
-  } else if (isObject(optionList)) {
-    arr.push(...toEnumArray(optionList, "value", "label"))
   }
+  arr.push(...toEnumArray(list, "value", "label"))
+
   return arr
 }
 
@@ -111,7 +105,7 @@ export const MidSearch = memo((props: SearchProps) => {
   const formInputRender = (item: InputProps, itemStyle, index) => {
     let elem: any = <></>
     const { name, type, optionList, label, itemProps = {} } = item
-    const { defaultValue, ...restProps } = itemProps
+    const { ...restProps } = itemProps
     switch (type) {
       case "select":
         elem = (
