@@ -1,26 +1,8 @@
-import React, { memo, useRef, useState } from "react"
-import {
-  Cascader,
-  Checkbox,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Select,
-  Space,
-  Spin,
-  TimePicker
-} from "antd"
-import { useDeepCompareEffect } from "common-hook"
-import { getFlatData } from "common-mid"
-import {
-  LooseObject,
-  isArray,
-  isNil,
-  isObject,
-  toEnumArray
-} from "common-screw"
+import React, { memo, useRef, useState } from 'react'
+import { Cascader, Checkbox, DatePicker, Form, Input, InputNumber, Radio, Select, Space, Spin, TimePicker } from 'antd'
+import { useDeepCompareEffect } from 'common-hook'
+import { getFlatData } from 'common-mid'
+import { LooseObject, isArray, isNil, isObject, toEnumArray } from 'common-screw'
 
 // 生成 Select 和 Radio 的 options 属性
 const toOptions = (optionList: any) => {
@@ -35,7 +17,7 @@ const toOptions = (optionList: any) => {
   } else if (isArray(optionList) && optionList[0].label) {
     return optionList
   } else if (isObject(optionList)) {
-    return toEnumArray(optionList, "value", "label")
+    return toEnumArray(optionList, 'value', 'label')
   }
 }
 
@@ -79,11 +61,11 @@ interface Props {
 }
 
 const DEFAULT_LANG_LIST = {
-  "zh-CN": {
+  'zh-CN': {
     PLEASE_INPUT: (value: any) => `请输入${value}`,
     PLEASE_SELECT: (value: any) => `请选择${value}`
   },
-  "en-US": {
+  'en-US': {
     PLEASE_INPUT: (value: any) => `Please enter ${value}`,
     PLEASE_SELECT: (value: any) => `Please select ${value}`
   }
@@ -142,52 +124,47 @@ export const MidForm = memo((props: Props) => {
 
   const onValuesChange = (vs: any, values: any) => {
     btnProps.loading && btnProps.setLoading(false)
-    monitorList &&
-      getFormValue &&
-      monitorList.includes(Object.keys(vs)[0]) &&
-      getFormValue(Object.keys(vs)[0], values)
+    monitorList && getFormValue && monitorList.includes(Object.keys(vs)[0]) && getFormValue(Object.keys(vs)[0], values)
   }
 
   const onFinish = (values: any) => {
     btnProps.setLoading(true)
     const flatForm = getFlatData(formList)
-    Object.keys(values).forEach((key) => {
+    Object.keys(values).forEach(key => {
       const value = values[key]
       const formProps = flatForm[key] || {}
       const type = formProps.type
       switch (type) {
-        case "date":
-          values[key] = value.format("YYYY-MM-DD")
+        case 'date':
+          values[key] = value.format('YYYY-MM-DD')
           break
-        case "dateAndTime":
-          values[key] = value.format("YYYY-MM-DD HH:mm:ss")
+        case 'dateAndTime':
+          values[key] = value.format('YYYY-MM-DD HH:mm:ss')
           break
-        case "time":
-          values[key] = value.format("HH:mm:ss")
+        case 'time':
+          values[key] = value.format('HH:mm:ss')
           break
-        case "timeRange":
-          values[key] = value
-            ? [value[0].format("HH:mm:ss"), value[1].format("HH:mm:ss")]
-            : undefined
+        case 'timeRange':
+          values[key] = value ? [value[0].format('HH:mm:ss'), value[1].format('HH:mm:ss')] : undefined
           break
-        case "password":
-        case "passwordAgain":
+        case 'password':
+        case 'passwordAgain':
           values[key] = Encrypt(value)
           break
-        case "confirmPassword":
+        case 'confirmPassword':
           delete values[key]
           break
-        case "newPassword":
+        case 'newPassword':
           if (values[key]) values[key] = Encrypt(value)
           break
-        case "richText":
+        case 'richText':
           values[key] = value.toHTML ? value.toHTML() : value
           break
-        case "upload":
-          values[key + "Name"] = value?.name || undefined
+        case 'upload':
+          values[key + 'Name'] = value?.name || undefined
           values[key] = value?.path || value?.file || value
           break
-        case "cascader":
+        case 'cascader':
           // 级联选择
           const { valueName } = formProps
           if (valueName) {
@@ -204,7 +181,7 @@ export const MidForm = memo((props: Props) => {
   }
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo)
+    console.log('Failed:', errorInfo)
   }
 
   const disabledDate = (current: any) => {
@@ -239,67 +216,50 @@ export const MidForm = memo((props: Props) => {
       let options: any = toOptions(optionList)
 
       switch (type) {
-        case "select":
-        case "selectNoRequired":
+        case 'select':
+        case 'selectNoRequired':
           ele = (
             <Select
               placeholder={pickPlaceholder}
               allowClear
               options={options}
               disabled={item.disabled}
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              getPopupContainer={triggerNode => triggerNode.parentNode}
               showSearch={options.length > 10}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
+              filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
               // mode="multiple" // 多选
               {...property}
             />
           )
 
           break
-        case "radio":
+        case 'radio':
           ele = <Radio.Group options={options} {...property} />
           break
-        case "checkbox":
+        case 'checkbox':
           ele = <Checkbox.Group options={options} {...property} />
           break
-        case "password":
-        case "newPassword":
-        case "confirmPassword":
-          ele = (
-            <Input.Password
-              placeholder={placeholder}
-              autoComplete="new-password"
-              {...property}
-            />
-          )
+        case 'password':
+        case 'newPassword':
+        case 'confirmPassword':
+          ele = <Input.Password placeholder={placeholder} autoComplete='new-password' {...property} />
           break
 
-        case "remark":
-          ele = (
-            <Input.TextArea
-              allowClear
-              placeholder={placeholder}
-              rows={2}
-              {...property}
-            />
-          )
+        case 'remark':
+          ele = <Input.TextArea allowClear placeholder={placeholder} rows={2} {...property} />
           break
-        case "date":
+        case 'date':
           ele = (
             <DatePicker
               placeholder={pickPlaceholder}
-              format="YYYY-MM-DD"
+              format='YYYY-MM-DD'
               disabledDate={disabledDate}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               {...property}
             />
           )
           break
-        case "dateAndTime":
+        case 'dateAndTime':
           ele = (
             <DatePicker
               showTime
@@ -309,29 +269,29 @@ export const MidForm = memo((props: Props) => {
             />
           )
           break
-        case "time":
+        case 'time':
           ele = (
             <TimePicker
               // @ts-ignore
               placeholder={pickPlaceholder}
-              style={{ width: "100%" }}
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              style={{ width: '100%' }}
+              getPopupContainer={triggerNode => triggerNode.parentNode}
               {...property}
             />
           )
           break
-        case "timeRange":
+        case 'timeRange':
           ele = (
             <TimePicker.RangePicker
               // @ts-ignore
               placeholder={pickPlaceholder}
-              style={{ width: "100%" }}
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              style={{ width: '100%' }}
+              getPopupContainer={triggerNode => triggerNode.parentNode}
               {...property}
             />
           )
           break
-        case "upload":
+        case 'upload':
           ele = (
             <BaseUpload
               placeholder={pickPlaceholder}
@@ -342,37 +302,29 @@ export const MidForm = memo((props: Props) => {
             />
           )
           break
-        case "cascader":
+        case 'cascader':
           ele = (
             <Cascader
               options={item.optionList}
               placeholder={pickPlaceholder}
               changeOnSelect={item.changeOnSelect || false}
               // @ts-ignore
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              getPopupContainer={triggerNode => triggerNode.parentNode}
               {...property}
             />
           )
           break
-        case "richText":
-          ele = (
-            <RichText
-              placeholder={placeholder}
-              language={language}
-              {...property}
-            />
-          )
+        case 'richText':
+          ele = <RichText placeholder={placeholder} language={language} {...property} />
           break
-        case "tree":
+        case 'tree':
           ele = <Tree language={language} {...property} />
           break
-        case "diy":
+        case 'diy':
           ele = item.show
           break
-        case "inputNumber":
-          ele = (
-            <InputNumber allowClear placeholder={placeholder} {...property} />
-          )
+        case 'inputNumber':
+          ele = <InputNumber allowClear placeholder={placeholder} {...property} />
           break
         default:
           ele = (
@@ -401,21 +353,10 @@ export const MidForm = memo((props: Props) => {
         {...formProps}
       >
         {renderItem}
-        <Item style={{ textAlign: "center" }}>
-          <Space size="large">
-            {btnProps.isShowReturn && (
-              <Button
-                type="formReturn"
-                onClick={btnProps.onBack}
-                name={btnProps.returnName}
-              />
-            )}
-            <Button
-              type="formSubmit"
-              htmlType="submit"
-              loading={btnProps.loading}
-              name={btnProps.submitName}
-            />
+        <Item style={{ textAlign: 'center' }}>
+          <Space size='large'>
+            {btnProps.isShowReturn && <Button type='formReturn' onClick={btnProps.onBack} name={btnProps.returnName} />}
+            <Button type='formSubmit' htmlType='submit' loading={btnProps.loading} name={btnProps.submitName} />
           </Space>
         </Item>
       </Form>

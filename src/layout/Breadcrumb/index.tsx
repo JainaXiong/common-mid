@@ -1,7 +1,14 @@
+/*
+ * @Author: Jaina Xiong
+ * @Email: 17761608@qq.com
+ * @Date: 2025-07-09 12:42:34
+ * @LastEditors: Jaina Xiong
+ * @LastEditTime: 2025-07-09 14:38:40
+ */
 //@ts-nocheck
-import React, { memo } from "react"
-import { Breadcrumb } from "antd"
-import { LooseObject } from "common-screw"
+import React, { memo } from 'react'
+import { Breadcrumb } from 'antd'
+import { LooseObject } from 'common-screw'
 
 interface Props {
   className?: string // class名称
@@ -49,35 +56,29 @@ export const MidBreadcrumb = memo((props: Props) => {
     pathInfo,
     pathShowList
   } = props
-  const pathSnippets: string[] = pathname?.split("/").filter((i: string) => i)
+  const pathSnippets: string[] = pathname?.split('/').filter((i: string) => i)
 
   const extraBreadcrumbItems = pathSnippets.map((_: string, index: number) => {
     if (noJumpList[_]) {
       return <Breadcrumb.Item key={index}>{noJumpList[_]}</Breadcrumb.Item>
     }
-    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`
+    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
     let toUrl = url
     if (Object.keys(jumpList).includes(_)) {
       toUrl = jumpList[_]
     }
     if (!pathInfo[url]?.name || noShowList.includes(_)) {
       // 无路径名称或 不显示路径
-      return ""
+      return ''
     }
     const content = (
       <>
-        {isShowIcon && IconFont && pathInfo[url]?.icon && (
-          <IconFont type={`icon-${pathInfo[url]?.icon}1`} />
-        )}
+        {isShowIcon && IconFont && pathInfo[url]?.icon && <IconFont type={`icon-${pathInfo[url]?.icon}1`} />}
 
         {pathInfo[url]?.name}
       </>
     )
-    return (
-      <Breadcrumb.Item key={url}>
-        {toUrl ? <Link to={toUrl}>{content}</Link> : content}
-      </Breadcrumb.Item>
-    )
+    return <Breadcrumb.Item key={url}>{toUrl ? <Link to={toUrl}>{content}</Link> : content}</Breadcrumb.Item>
   })
 
   return (
