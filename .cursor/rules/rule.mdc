@@ -1,0 +1,69 @@
+<!--
+ * @Author: Jaina Xiong
+ * @Email: 17761608@qq.com
+ * @Date: 2025-08-14 17:20:36
+ * @LastEditors: Jaina Xiong
+ * @LastEditTime: 2025-08-14 17:22:24
+-->
+
+### 代码生成规则（遵循本仓库风格）
+
+- **缩进与格式**
+
+  - 使用 2 个空格缩进；不要混用 Tab。
+  - 使用双引号 ""。
+  - 末尾不加分号。
+  - 保持现有文件原有风格，不在无关位置改动格式。
+
+- **TypeScript**
+
+  - 严格模式已开启；尽量补全类型，但与现状一致允许必要时使用 `any`。
+  - 组件 `Props` 使用 `interface Props { ... }` 明确定义。
+  - 优先使用命名导出；禁止默认导出。
+  - Barrel 文件采用 `export * from "./xxx"` 形式集中导出。
+
+- **React 组件**
+
+  - 使用函数式组件与 Hooks；组件以 `export const ComponentName = memo((props: Props) => { ... })` 形式导出。
+  - Props 解构、早返回（guard clause），减少嵌套。
+  - 事件与回调统一使用箭头函数。
+
+- **导入顺序**
+
+  - 顺序：第三方库 → 内部别名 → 相对路径。
+  - 使用命名导入（大括号），路径不带文件后缀。
+
+- **注释规范**
+
+  - 保留文件头部注释块。
+  - 组件/方法上方使用注释块，包含 `@name @param @example`（参考现有文件）。
+  - 避免在代码行尾写内联注释。
+
+- **国际化（i18n）**
+
+  - 组件可接收 `language` 与 `langList`；默认取 `langList` 的第一个键。
+  - 使用 `useDeepCompareEffect` 同步语言包；约定常量名 `LANG`。
+  - 公共文案键沿用现有命名：
+    - 表格：`TOTAL`、`SELECT_TIP`
+    - 表单：`PLEASE_INPUT`、`PLEASE_SELECT`
+    - 上传：`UPLOAD`、`UPLOAD_ING`、图片类提示键保持一致
+
+- **Axios 约定**
+
+  - `successCode` 固定为 `8001`，错误提示使用 `MidMessage`。
+  - Token 从 `storage.getItem("token")` 读取并写入 `Authorization`。
+  - 保留请求耗时日志打印（开始、完成、耗时）。
+
+- **命名与可读性**
+
+  - 变量/函数使用有语义的完整单词；函数名用动词或动宾结构。
+  - 使用中间变量表达复杂条件，提升可读性。
+
+- **控制流**
+
+  - 优先使用早返回处理边界与异常；避免深层嵌套。
+  - 错误处理应返回明确的结构或拒绝原因（与现有 Axios 行为一致）。
+
+- **编辑与提交**
+  - 不改变既有文件的引号、分号与缩进风格；新代码按上述规则书写。
+  - 新增/修改后需保证通过 TypeScript 编译与现有构建脚本。
