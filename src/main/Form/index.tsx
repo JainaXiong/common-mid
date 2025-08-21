@@ -2,7 +2,8 @@ import React, { memo, useRef, useState } from 'react'
 import { Cascader, Checkbox, DatePicker, Form, Input, InputNumber, Radio, Select, Space, Spin, TimePicker } from 'antd'
 import { useDeepCompareEffect } from 'common-hook'
 import { getFlatData } from 'common-mid'
-import { LooseObject, isArray, isNil, isObject, toEnumArray } from 'common-screw'
+import { isArray, isNil, isObject, toEnumArray } from 'common-screw'
+import type { LooseObject } from '../../_utils'
 
 // 生成 Select 和 Radio 的 options 属性
 const toOptions = (optionList: any) => {
@@ -26,7 +27,7 @@ const { Item } = Form
 interface Props {
   language?: string // 语言
   langList?: any // 语言包
-  disabled?: any // 是否禁止操作
+  disabled?: boolean // 是否禁止操作
   formProps: { className?: string; spinning?: boolean; [key: string]: any } // 表单属性
   formRules: LooseObject // 表单验证规则
   formList: {
